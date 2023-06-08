@@ -1,5 +1,5 @@
 import React from "react";
-import DeleteButton from "./DeleteButton";
+import ButtonEditOrDelete from "./ButtonEditOrDelete";
 
 const Galery = ({ images, isRedactable, removeImage }) => {
   return (
@@ -7,12 +7,16 @@ const Galery = ({ images, isRedactable, removeImage }) => {
       {images.map((image) => {
         return (
           <div
-            key={image.id}
+            key={image.lastModified}
             className="max-w-sm rounded overflow-hidden shadow-lg relative flex flex-center object-cover"
           >
-            <img src={image?.url} alt="uploaded-pic" />
+            <img src={URL.createObjectURL(image)} alt="uploaded-pic" />
             {isRedactable && (
-              <DeleteButton item={image} removeFunction={removeImage} />
+              <ButtonEditOrDelete
+                item={image}
+                handleFunction={removeImage}
+                isDelete={true}
+              />
             )}
           </div>
         );

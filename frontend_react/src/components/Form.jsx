@@ -2,32 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Galery from "./Galery";
-import createId from "../utils/createId";
 
-const Form = ({ type, handleSubmit, submitting }) => {
-  const [imageAssets, setImageAssets] = useState([]);
+const Form = ({ type, handleSubmit, submitting, hero, setHero }) => {
   const [wrongImageType, setWrongImageType] = useState(false);
-  const [hero, setHero] = useState({
-    nickname: "",
-    real_name: "",
-    origin_description: "",
-    superpowers: "",
-    catch_phrase: "",
-    images: [],
-  });
   const uploadImage = (e) => {
     const file = e.target.files[0];
     const allowedImageTypes = ["image/jpeg", "image/png"];
     if (file) {
       if (allowedImageTypes.includes(file.type)) {
-        const image = {
-          id: createId(),
-          url: URL.createObjectURL(e.target.files[0]),
-          lastModified: file.lastModified,
-        };
         setWrongImageType(false);
         setHero({ ...hero, images: [...hero.images, file] });
-        setImageAssets([...imageAssets, image]);
       } else {
         setWrongImageType(true);
       }
@@ -40,9 +24,6 @@ const Form = ({ type, handleSubmit, submitting }) => {
         (image) => image.lastModified !== img.lastModified
       ),
     });
-    setImageAssets(
-      imageAssets.filter((imageAsset) => imageAsset.id !== img.id)
-    );
   };
 
   return (
@@ -73,7 +54,7 @@ const Form = ({ type, handleSubmit, submitting }) => {
             Hero real name
           </span>
           <input
-            value={hero.nickname}
+            value={hero.real_name}
             onChange={(e) => setHero({ ...hero, real_name: e.target.value })}
             placeholder="Write hero real name here"
             required
@@ -118,6 +99,13 @@ const Form = ({ type, handleSubmit, submitting }) => {
             className="form_input"
           />
         </label>
+        {hero.images.length > 0 && (
+          <Galery
+            images={hero.images}
+            removeImage={removeImage}
+            isRedactable={true}
+          />
+        )}
         {wrongImageType && <p>Wrong image type</p>}
         <label className="cursor-pointer">
           <div className="flex flex-col items-center justify-center h-full rounded-md bg-slate-50 py-4 shadow-md">
@@ -138,13 +126,6 @@ const Form = ({ type, handleSubmit, submitting }) => {
             className="w-0 h-0"
           />
         </label>
-        {imageAssets.length > 0 && (
-          <Galery
-            images={imageAssets}
-            removeImage={removeImage}
-            isRedactable={true}
-          />
-        )}
         <div className="flex-end flex justify-between mx-3 mb-5 gap-4">
           <Link href="/" className="text-gray-500 text-sm">
             Cancel
@@ -152,7 +133,6 @@ const Form = ({ type, handleSubmit, submitting }) => {
           <button
             type="submit"
             disabled={submitting}
-            onClick={handleSubmit}
             className="px-5 py-1.5 text-sm bg-primary-orange text-white rounded-3xl"
           >
             {submitting ? `${type}...` : type}

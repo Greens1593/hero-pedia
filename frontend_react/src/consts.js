@@ -1,10 +1,1 @@
-export const hero = {
-  nickname: "",
-  real_name: "",
-  origin_description: "",
-  superpowers: "",
-  catch_phrase: "",
-  images: [],
-};
-
-export const url = "";
+export const url = "http://localhost:8080/api/v1/hero";

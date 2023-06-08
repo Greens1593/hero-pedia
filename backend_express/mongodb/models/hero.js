@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const heroSchema = new mongoose.Schema({
+const Hero = new mongoose.Schema({
   nickname: {
     type: String,
     required: true,
@@ -27,6 +27,6 @@ const heroSchema = new mongoose.Schema({
   },
 });
 
-const Hero = mongoose.model("Hero", heroSchema);
+const HeroSchema = mongoose.model("Hero", Hero);
 
-module.exports = Hero;
+export default HeroSchema;

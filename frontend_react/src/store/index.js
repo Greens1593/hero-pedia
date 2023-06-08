@@ -4,7 +4,7 @@ import uiSlice from "./uiSlice";
 
 const store = configureStore({
   reducer: {
-    hero: heroSlice.reducer,
+    heroes: heroSlice.reducer,
     ui: uiSlice.reducer,
   },
 });
