@@ -7,9 +7,11 @@ import App from "./App";
 import "./global.css";
 
 createRoot(document.getElementById("root")).render(
-  <Router>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </Router>
+  <React.StrictMode>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
+  </React.StrictMode>
 );

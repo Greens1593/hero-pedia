@@ -65,7 +65,8 @@ export const createHero = (hero) => {
   };
 };
 
-export const editHero = (hero) => {
+export const editHero = (req) => {
+  console.log(req);
   return async (dispatch) => {
     dispatch(
       uiActions.showNotification({
@@ -75,12 +76,16 @@ export const editHero = (hero) => {
       })
     );
 
-    const sendRequest = async () => {
-      await axios.put(url + "/edit", hero);
+    const sendRequest = async (req) => {
+      await axios.put(`${url}/${req.id}`, req.hero, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     };
 
     try {
-      await sendRequest();
+      await sendRequest(req);
       dispatch(
         uiActions.showNotification({
           open: true,
@@ -146,8 +151,9 @@ export const findHeroById = (id) => {
     };
 
     try {
-      const heroData = await sendRequest();
-      return heroData;
+      return sendRequest().then((res) => {
+        return res;
+      });
     } catch (err) {
       dispatch(
         uiActions.showNotification({

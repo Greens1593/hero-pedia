@@ -4,16 +4,19 @@ import ButtonEditOrDelete from "./ButtonEditOrDelete";
 const Galery = ({ images, isRedactable, removeImage }) => {
   return (
     <div className="grid grid-cols-3 gap-4">
-      {images.map((image) => {
+      {images.map((item) => {
         return (
           <div
-            key={image.lastModified}
+            key={item.lastModified || item}
             className="max-w-sm rounded overflow-hidden shadow-lg relative flex flex-center object-cover"
           >
-            <img src={URL.createObjectURL(image)} alt="uploaded-pic" />
+            <img
+              src={typeof item === "string" ? item : URL.createObjectURL(item)}
+              alt="hero"
+            />
             {isRedactable && (
               <ButtonEditOrDelete
-                item={image}
+                item={item}
                 handleFunction={removeImage}
                 isDelete={true}
               />

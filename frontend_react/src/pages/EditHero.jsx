@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Notification from "../components/Notification";
 import { editHero, findHeroById } from "../store/heroActionsSlice";
+import { uiActions } from "../store/uiSlice";
+import Form from "../components/Form";
 
 const EditHero = () => {
   const { id } = useParams();
@@ -11,6 +13,7 @@ const EditHero = () => {
   const dispatch = useDispatch();
   const [submitting, setSubmitting] = useState(false);
   const [hero, setHero] = useState({
+    _id: "",
     nickname: "",
     real_name: "",
     origin_description: "",
@@ -19,12 +22,9 @@ const EditHero = () => {
     images: [],
   });
 
-  useEffect(() => {
-    const hero = dispatch(findHeroById(id));
-    setHero(hero);
-  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(hero);
     const formData = new FormData();
     formData.append("nickname", hero.nickname);
     formData.append("real_name", hero.real_name);
@@ -35,8 +35,13 @@ const EditHero = () => {
       formData.append(`image_${index + 1}`, file);
     });
     setSubmitting(true);
+    const reqData = {
+      hero: formData,
+      id: hero._id,
+    };
+
     try {
-      dispatch(editHero(formData));
+      dispatch(editHero(reqData));
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -45,6 +50,26 @@ const EditHero = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchHeroData = async () => {
+      try {
+        const heroData = await dispatch(findHeroById(id));
+        setHero(heroData);
+      } catch (err) {
+        dispatch(
+          uiActions.showNotification({
+            open: true,
+            message: "Request Failed",
+            type: "error",
+          })
+        );
+      }
+    };
+
+    fetchHeroData();
+  }, [dispatch, id]);
+
+  if (!hero) return <h1 className="head_text">Loading...</h1>;
   return (
     <section className="w-full max-w-full flex justify-center">
       {notification && (

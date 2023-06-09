@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Galery from "./Galery";
 
 const Form = ({ type, handleSubmit, submitting, hero, setHero }) => {
+  const navigate = useNavigate();
   const [wrongImageType, setWrongImageType] = useState(false);
   const uploadImage = (e) => {
     const file = e.target.files[0];
@@ -126,10 +127,13 @@ const Form = ({ type, handleSubmit, submitting, hero, setHero }) => {
             className="w-0 h-0"
           />
         </label>
-        <div className="flex-end flex justify-between mx-3 mb-5 gap-4">
-          <Link href="/" className="text-gray-500 text-sm">
+        <div className="flex-end flex items-center justify-between mx-3 mb-5 gap-4">
+          <p
+            onClick={() => navigate("/")}
+            className="text-gray-500 text-sm cursor-pointer"
+          >
             Cancel
-          </Link>
+          </p>
           <button
             type="submit"
             disabled={submitting}

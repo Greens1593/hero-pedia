@@ -1,7 +1,7 @@
 import React from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 
-const DeleteButton = ({ handleFunction, item, isDelete }) => {
+const ButtonEditOrDelete = ({ handleFunction, item, isDelete }) => {
   return (
     <button
       type="button"
@@ -18,4 +18,4 @@ const DeleteButton = ({ handleFunction, item, isDelete }) => {
   );
 };
 
-export default DeleteButton;
+export default ButtonEditOrDelete;
