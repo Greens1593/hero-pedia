@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Form from "../components/Form";
 import { createHero } from "../store/heroActionsSlice";
-import Notification from "../components/Notification";
 import { useNavigate } from "react-router-dom";
 
 const CreateHero = () => {
   const navigate = useNavigate();
-  const notification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
   const [submitting, setSubmitting] = useState(false);
   const [hero, setHero] = useState({
@@ -44,9 +42,6 @@ const CreateHero = () => {
 
   return (
     <section className="w-full max-w-full flex justify-center">
-      {notification && (
-        <Notification type={notification.type} message={notification.message} />
-      )}
       <Form
         type="Add"
         handleSubmit={handleSubmit}

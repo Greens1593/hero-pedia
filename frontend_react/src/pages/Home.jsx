@@ -8,7 +8,7 @@ const Home = () => {
   const state = useSelector((state) => state);
   const [heroes, setHeroes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const heroesPerPage = 2; // Number of heroes to display per page
+  const heroesPerPage = 5; // Number of heroes to display per page
 
   useEffect(() => {
     setHeroes(state.heroes);

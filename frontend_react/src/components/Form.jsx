@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Galery from "./Galery";
 
@@ -18,6 +18,8 @@ const Form = ({ type, handleSubmit, submitting, hero, setHero }) => {
       }
     }
   };
+
+  console.log(hero.images);
   const removeImage = (img) => {
     setHero({
       ...hero,
@@ -123,6 +125,7 @@ const Form = ({ type, handleSubmit, submitting, hero, setHero }) => {
           <input
             type="file"
             name="upload-image"
+            required
             onChange={uploadImage}
             className="w-0 h-0"
           />

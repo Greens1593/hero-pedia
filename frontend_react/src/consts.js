@@ -1,1 +1,1 @@
-export const url = "http://localhost:8080/api/v1/hero";
+export const url = "https://hero-pedia.onrender.com/api/v1/hero";

@@ -66,7 +66,6 @@ export const createHero = (hero) => {
 };
 
 export const editHero = (req) => {
-  console.log(req);
   return async (dispatch) => {
     dispatch(
       uiActions.showNotification({

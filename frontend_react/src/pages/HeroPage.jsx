@@ -46,7 +46,8 @@ const HeroPage = () => {
 
     fetchHeroData();
   }, [dispatch, id]);
-  if (!hero) return <h1 className="head_text">Loading...</h1>;
+  if (hero.images.length === 0)
+    return <h1 className="head_text">Loading...</h1>;
   return (
     <section className="container w-5/6 rounded-md bg-slate-100 p-10 shadow-md flex flex-col justify-center items-center gap-5 mb-4 relative">
       <h1 className="head_text blue_gradient">{hero.nickname}</h1>
@@ -58,30 +59,32 @@ const HeroPage = () => {
         />
       </div>
       <ul className="w-1/2 flex flex-col gap-3 mb-4">
-        <li className="flex justify-between w-full items-center">
-          <span className="font-medium text-[#666e75] text-xl">Real Name:</span>
-          <p className="font-semibold">{hero.real_name}</p>
-        </li>
-        <li className="flex justify-between w-full items-center">
-          <span className="font-medium text-[#666e75] text-xl">
-            Origin Description:
-          </span>
-          <p className="font-semibold">{hero.origin_description}</p>
-        </li>
-        <li className="flex justify-between w-full items-center">
-          <span className="font-medium text-[#666e75] text-xl">
-            Superpowers:
-          </span>
-          <p className="font-semibold">{hero.superpowers}</p>
-        </li>
-        <li className="flex justify-between w-full items-center">
+        <li className="bg-white p-3 rounded-md flex flex-col gap-3 justify-center items-center">
           <span className="font-medium text-[#666e75] text-xl">
             Catch Phrase:
           </span>
           <p className="font-semibold">{hero.catch_phrase}</p>
         </li>
+        <li className="bg-white p-3 rounded-md flex flex-col gap-3 justify-center items-center">
+          <span className="font-medium text-[#666e75] text-xl">
+            Superpowers:
+          </span>
+          <p className="font-semibold">{hero.superpowers}</p>
+        </li>
+        <li className="bg-white p-3 rounded-md flex flex-col gap-3 justify-center items-center">
+          <span className="font-medium text-[#666e75] text-xl">Real Name:</span>
+          <p className="font-semibold">{hero.real_name}</p>
+        </li>
+        <li className="bg-white p-3 rounded-md flex flex-col gap-3 justify-center items-center">
+          <h3 className="font-medium text-[#666e75] text-xl">
+            Origin Description
+          </h3>
+          <p className="font-semibold ">{hero.origin_description}</p>
+        </li>
       </ul>
-      <h3 className="font-medium text-black text-xl">{hero.nickname} images</h3>
+      <h3 className="font-medium text-[#666e75] text-xl">
+        {hero.nickname} images
+      </h3>
       <Galery images={hero.images} isRedactable={false} />
       <ButtonEditOrDelete
         item={hero._id}

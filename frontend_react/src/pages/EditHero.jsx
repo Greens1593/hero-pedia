@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import Notification from "../components/Notification";
 import { editHero, findHeroById } from "../store/heroActionsSlice";
 import { uiActions } from "../store/uiSlice";
 import Form from "../components/Form";
@@ -9,7 +8,6 @@ import Form from "../components/Form";
 const EditHero = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const notification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
   const [submitting, setSubmitting] = useState(false);
   const [hero, setHero] = useState({
@@ -24,7 +22,6 @@ const EditHero = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(hero);
     const formData = new FormData();
     formData.append("nickname", hero.nickname);
     formData.append("real_name", hero.real_name);
@@ -55,6 +52,15 @@ const EditHero = () => {
       try {
         const heroData = await dispatch(findHeroById(id));
         setHero(heroData);
+        const imageFiles = await Promise.all(
+          heroData.images.map(async (imageUrl) => {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const file = new File([blob], "image.jpg", { type: blob.type });
+            return file;
+          })
+        );
+        setHero((prevHero) => ({ ...prevHero, images: imageFiles }));
       } catch (err) {
         dispatch(
           uiActions.showNotification({
@@ -67,14 +73,18 @@ const EditHero = () => {
     };
 
     fetchHeroData();
-  }, [dispatch, id]);
-
-  if (!hero) return <h1 className="head_text">Loading...</h1>;
+  }, []);
+  if (
+    hero.images.length === 0 &&
+    hero.nickname === "" &&
+    hero.real_name === "" &&
+    hero.origin_description === "" &&
+    hero.superpowers === "" &&
+    hero.catch_phrase === ""
+  )
+    return <h1 className="head_text">Loading...</h1>;
   return (
     <section className="w-full max-w-full flex justify-center">
-      {notification && (
-        <Notification type={notification.type} message={notification.message} />
-      )}
       <Form
         type="Edit"
         handleSubmit={handleSubmit}
